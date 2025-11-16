@@ -2,7 +2,7 @@
 import React from 'react';
 import axios from 'axios';
 
-// API base URL should match your backend server address
+// API base URL should match your backend server address for offline development
 const API_URL = 'http://localhost:5000/api/polls';
 
 const Poll = ({ data }) => {
