@@ -1,3 +1,4 @@
+/* src/App.css (Complete Updated File) */
 .app-container {
   max-width: 800px;
   margin: 40px auto;
@@ -25,18 +26,43 @@
   padding: 20px;
   text-align: left;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  position: relative; 
+}
+
+.poll-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.delete-button {
+  background: #e94560;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.delete-button:hover {
+  background: #c73049;
 }
 
 .poll-card h2 {
   font-size: 1.4rem;
   margin-top: 0;
+  margin-bottom: 5px; 
   color: var(--text-light);
 }
 
 .poll-card p {
   font-size: 0.8rem;
   opacity: 0.6;
-  margin-bottom: 20px;
+  margin-top: 0;
 }
 
 .poll-card small {
