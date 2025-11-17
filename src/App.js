@@ -1,5 +1,5 @@
 // Don't Touch this file - GV
-import {React, auseState, useEffect } from 'react';
+import {React, useState, useEffect } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 import Poll from './components/Poll';
