@@ -1,5 +1,5 @@
 // Don't Touch this file - GV
-import {React, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 import Poll from './components/Poll';
@@ -17,7 +17,7 @@ function App() {
         const response = await axios.get(API_URL);
         setPolls(response.data);
       } catch (error) {
-        console.error("Error fetching polls:", error);
+        console.error("Error fetching polls:", error); 
       }
     };
     fetchPolls();
@@ -33,10 +33,8 @@ function App() {
       );
     });
 
-    // Listen for the 'poll_delete' event from the server
     socket.on('poll_delete', (deletedPoll) => {
       console.log('Received poll delete:', deletedPoll);
-      // Update the state by filtering out the deleted poll
       setPolls(currentPolls =>
         currentPolls.filter(poll => poll._id !== deletedPoll.id)
       );
@@ -52,7 +50,7 @@ function App() {
         {polls.length > 0 ? (
           polls.map(poll => <Poll key={poll._id} data={poll} />)
         ) : (
-          <p>Mag hulat boi. Gagawa na nga</p>
+          <p>No active polls at the moment. Create one using the API!</p>
         )}
       </div>
     </div>
