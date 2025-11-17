@@ -5,7 +5,7 @@ import Poll from './components/Poll';
 import './App.css';
 
 
-//Don't Touch the URLs - GV <3
+//Don't Touch the URLs - GV 
 // Use environment variables for the URLs, with localhost as a fallback
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/polls';
 const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000'; 
