@@ -8,14 +8,22 @@ const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000';
 
 const PollListPage = () => {
   const [polls, setPolls] = useState([]);
+  // --- NEW STATE FOR LOADING AND ERRORS ---
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   
   useEffect(() => {
     const fetchPolls = async () => {
       try {
+        setLoading(true); // Start loading
+        setError(''); // Clear previous errors
         const response = await axios.get(API_URL);
         setPolls(response.data);
-      } catch (error) {
-        console.error("Error fetching polls:", error);
+      } catch (err) {
+        console.error("Error fetching polls:", err);
+        setError('Failed to load polls. Please try refreshing the page.');
+      } finally {
+        setLoading(false); // Stop loading
       }
     };
     fetchPolls();
@@ -39,6 +47,23 @@ const PollListPage = () => {
     return () => socket.disconnect();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="page-error-message">
+        <h2>Oops!</h2>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h1>Live Polls</h1>
@@ -46,7 +71,7 @@ const PollListPage = () => {
         {polls.length > 0 ? (
           polls.map(poll => <Poll key={poll._id} data={poll} />)
         ) : (
-          <p>No active polls at the moment. Create one!</p>
+          <p>No active polls at the moment. Why not create one?</p>
         )}
       </div>
     </div>

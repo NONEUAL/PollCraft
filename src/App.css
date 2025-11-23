@@ -1,4 +1,3 @@
-/* src/App.css (Complete Updated File) */
 .app-container {
   max-width: 800px;
   margin: 40px auto;
@@ -210,4 +209,37 @@
   border-radius: 5px;
   margin-bottom: 15px;
   text-align: center;
+}
+
+.page-error-message {
+  background-color: #5c3b42;
+  color: #ff8e8e;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--accent-color);
+  text-align: center;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+/* --- Loading Spinner Styles --- */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+}
+
+.spinner {
+  border: 5px solid var(--card-bg);
+  border-top: 5px solid var(--accent-color);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

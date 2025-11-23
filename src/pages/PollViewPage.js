@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid'; // Import the UUID library
+import { v4 as uuidv4 } from 'uuid';
 import io from 'socket.io-client';
 import './PollViewPage.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/polls';
 const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000';
 
+// Helper function to get or create a unique voter ID from localStorage
 const getVoterId = () => {
   let voterId = localStorage.getItem('voterId');
   if (!voterId) {
-    voterId = uuidv4(); // Generate a new unique ID
+    voterId = uuidv4();
     localStorage.setItem('voterId', voterId);
   }
   return voterId;
@@ -33,13 +34,13 @@ const PollViewPage = () => {
         setError('');
         const response = await axios.get(`${API_URL}/${id}`);
         setPoll(response.data);
-        // Check if this device has already voted
+        // Check if this device has already voted type shii 
         if (response.data.votedBy.includes(voterId)) {
           setHasVoted(true);
         }
       } catch (err) {
-        setError('Poll not found or has expired.');
         console.error("Error fetching single poll:", err);
+        setError('This poll may not exist or has expired.');
       } finally {
         setLoading(false);
       }
@@ -49,34 +50,44 @@ const PollViewPage = () => {
       fetchPoll();
     }
 
+    // Set up real-time connection
     const socket = io(SOCKET_URL);
+    
+    // Listen for updates to this specific poll
     socket.on('poll_update', (updatedPoll) => {
-      // If the update is for the poll we are currently viewing...
       if (updatedPoll._id === id) {
-        setPoll(updatedPoll); // ...update our state with the new data
+        setPoll(updatedPoll);
       }
     });
+
+    // Listen for when this specific poll is deleted by another user
+    socket.on('poll_delete', (deletedPoll) => {
+        if (deletedPoll.id === id) {
+            setError('This poll has been deleted by the creator.');
+            setPoll(null); // Clear the poll data to trigger the error view
+        }
+    });
+
     // Clean up the connection when the component unmounts
     return () => socket.disconnect();
-
   }, [id, voterId]);
 
   const handleVote = async (optionIndex) => {
     setIsSubmitting(true);
+    setError(''); // Clear previous errors on a new attempt
     try {
       const response = await axios.post(`${API_URL}/${id}/vote`, {
         optionIndex,
         voterId // Send the device ID with the vote
       });
-      setPoll(response.data); // Update with the returned data
-      setHasVoted(true); // Lock the UI
+      setPoll(response.data);
+      setHasVoted(true);
     } catch (err) {
-      // If the server says we've already voted, lock the UI
       if (err.response && err.response.status === 403) {
-        setHasVoted(true);
-        setError("You've already voted on this poll.");
+        setHasVoted(true); // Lock the UI if server confirms vote exists
+        // Don't show an error, just show the results.
       } else {
-        setError('An error occurred. Please try again.');
+        setError('Your vote could not be submitted. Please try again.');
         console.error("Error submitting vote:", err);
       }
     } finally {
@@ -84,9 +95,28 @@ const PollViewPage = () => {
     }
   };
 
-  if (loading) return <div className="poll-view-container"><p>Loading poll...</p></div>;
-  if (error && !poll) return <div className="poll-view-container error-message"><p>{error}</p></div>;
-  if (!poll) return null;
+  // Go spin the shii 
+
+  if (loading) {
+    return (
+      <div className="poll-view-container">
+        <div className="loading-container">
+          <div className="spinner"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !poll) {
+    return (
+      <div className="poll-view-container">
+        <div className="page-error-message">
+          <h2>Oops!</h2>
+          <p>{error || 'Could not load the poll.'}</p>
+        </div>
+      </div>
+    );
+  }
 
   const totalVotes = poll.options.reduce((acc, option) => acc + option.votes, 0);
 
@@ -94,7 +124,8 @@ const PollViewPage = () => {
     <div className="poll-view-container">
       <div className={`poll-card-standalone ${hasVoted ? 'results-view' : ''}`}>
         <h2>{poll.question}</h2>
-        {error && <p className="error-message">{error}</p>}
+        {/* We can show a specific vote submission error here if needed */}
+        {error && !poll && <p className="error-message">{error}</p>}
 
         <ul className="options-list-standalone">
           {poll.options.map((option, index) => {
