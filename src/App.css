@@ -120,3 +120,94 @@
   border-radius: 5px;
   transition: width 0.5s ease-in-out;
 }
+
+.create-poll-container {
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: var(--secondary-bg);
+  padding: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.poll-form .form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.poll-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: var(--text-light);
+}
+
+.poll-form input[type="text"],
+.poll-form select {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--primary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  color: var(--text-light);
+  font-size: 1rem;
+}
+
+.option-input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.option-input-group input {
+  flex-grow: 1;
+}
+
+.remove-option-btn, .add-option-btn {
+  border: none;
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.remove-option-btn {
+  background-color: #5c3b42;
+  color: #ff8e8e;
+}
+
+.add-option-btn {
+  background-color: var(--card-bg);
+  color: var(--text-light);
+  width: 100%;
+  margin-top: 5px;
+  margin-left: 0;
+}
+
+.submit-poll-btn {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-poll-btn:disabled {
+  background-color: #5c3b42;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #ff8e8e;
+  background-color: #5c3b42;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+}
