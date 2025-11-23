@@ -8,6 +8,7 @@ import './PollViewPage.css';
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/polls';
 const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000';
 
+// Helper function to get or create a unique ID for the device
 const getVoterId = () => {
   let voterId = localStorage.getItem('voterId');
   if (!voterId) {
@@ -26,7 +27,12 @@ const PollViewPage = () => {
   const { id } = useParams();
   const voterId = getVoterId();
 
+  // State for the timer bar
   const [timeLeft, setTimeLeft] = useState({ percentage: 100, text: 'Loading...' });
+  // State for the results display toggle
+  const [displayMode, setDisplayMode] = useState('count'); // 'count' or 'percentage'
+
+  // Main useEffect for fetching initial poll data and setting up sockets
   useEffect(() => {
     const fetchPoll = async () => {
       try {
@@ -50,6 +56,7 @@ const PollViewPage = () => {
     }
 
     const socket = io(SOCKET_URL);
+    
     socket.on('poll_update', (updatedPoll) => {
       if (updatedPoll._id === id) {
         setPoll(updatedPoll);
@@ -66,13 +73,13 @@ const PollViewPage = () => {
     return () => socket.disconnect();
   }, [id, voterId]);
 
+  // useEffect specifically for the countdown timer logic
   useEffect(() => {
     if (!poll || !poll.expiresAt) {
-      // If the poll has no expiration, we don't need a timer.
       setTimeLeft({ percentage: 100, text: 'No time limit' });
       return;
     }
-    // Set up an interval to update the timer every second
+
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const expirationTime = new Date(poll.expiresAt).getTime();
@@ -87,7 +94,6 @@ const PollViewPage = () => {
       } else {
         const percentage = (remainingTime / totalDuration) * 100;
         
-        // Format the remaining time into a readable string (mm:ss)
         const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
         const text = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} left`;
@@ -96,11 +102,10 @@ const PollViewPage = () => {
       }
     }, 1000);
 
-    // Clean up the interval when the component unmounts or the poll changes
     return () => clearInterval(interval);
+  }, [poll]);
 
-  }, [poll]); // This effect re-runs whenever the poll data changes
-
+  // Function to handle the vote submission
   const handleVote = async (optionIndex) => {
     setIsSubmitting(true);
     try {
@@ -123,6 +128,7 @@ const PollViewPage = () => {
     }
   };
 
+  // Render logic for loading state
   if (loading) {
     return (
       <div className="poll-view-container">
@@ -131,6 +137,7 @@ const PollViewPage = () => {
     );
   }
 
+  // Render logic for error state
   if (error || !poll) {
     return (
       <div className="poll-view-container">
@@ -148,15 +155,18 @@ const PollViewPage = () => {
     <div className="poll-view-container">
       <div className={`poll-card-standalone ${hasVoted ? 'results-view' : ''}`}>
         
-        {poll.expiresAt && (
-          <div className="timer-bar-container">
-            <div className="timer-bar" style={{ width: `${timeLeft.percentage}%` }}></div>
-            <span className="timer-text">{timeLeft.text}</span>
-          </div>
-        )}
-
+        <div className="poll-header-container">
+          <h2>{poll.question}</h2>
+          {hasVoted && totalVotes > 0 && (
+            <button 
+              className="view-toggle-btn"
+              onClick={() => setDisplayMode(displayMode === 'count' ? 'percentage' : 'count')}
+            >
+              {displayMode === 'count' ? 'Show %' : 'Show Votes'}
+            </button>
+          )}
+        </div>
         
-        <h2>{poll.question}</h2>
         {error && !hasVoted && <p className="error-message">{error}</p>}
 
         <ul className="options-list-standalone">
@@ -170,7 +180,14 @@ const PollViewPage = () => {
                   disabled={hasVoted || isSubmitting || timeLeft.percentage <= 0}
                 >
                   <span className="option-text">{option.text}</span>
-                  {hasVoted && <span className="option-votes">{option.votes} votes</span>}
+                  
+                  {hasVoted && (
+                    <span className="option-votes">
+                      {displayMode === 'count' 
+                        ? `${option.votes} votes` 
+                        : `${votePercentage.toFixed(1)}%`}
+                    </span>
+                  )}
                 </button>
                 {hasVoted && (
                   <div className="vote-bar-container-standalone">
@@ -181,7 +198,13 @@ const PollViewPage = () => {
             );
           })}
         </ul>
-        {hasVoted && <p className="total-votes">Total Votes: {totalVotes}</p>}
+        
+        {poll.expiresAt && (
+          <div className="timer-bar-container">
+            <div className="timer-bar" style={{ width: `${timeLeft.percentage}%` }}></div>
+            <span className="timer-text">{timeLeft.text}</span>
+          </div>
+        )}
       </div>
     </div>
   );

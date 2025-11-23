@@ -7,11 +7,12 @@ const Header = () => {
     <header className="app-header">
       <div className="header-content">
         <Link to="/" className="logo">TournaCraft</Link>
-        <nav>
+        {/* <nav>
           <Link to="/polls" className="nav-link">
             View All Polls
           </Link>
-        </nav>
+        </nav> */}
+
       </div>
     </header>
   );
