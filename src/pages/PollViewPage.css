@@ -1,0 +1,38 @@
+.poll-view-container {
+  max-width: 600px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.poll-card-standalone {
+  background: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 30px;
+  text-align: left;
+}
+
+.poll-card-standalone h2 {
+  font-size: 1.8rem;
+  margin-top: 0;
+  text-align: center;
+}
+
+.poll-card-standalone p {
+  text-align: center;
+  opacity: 0.7;
+  margin-bottom: 30px;
+}
+
+.poll-card-standalone ul {
+  list-style: none;
+  padding: 0;
+}
+
+.poll-card-standalone li {
+  background-color: var(--card-bg);
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+}

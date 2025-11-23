@@ -1,0 +1,73 @@
+/* src/components/Modal.css (New File) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: var(--secondary-bg);
+  padding: 30px 40px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--text-light);
+  cursor: pointer;
+}
+
+.modal-content h2 {
+  color: var(--text-color);
+  margin-top: 0;
+}
+
+.modal-content p {
+  color: var(--text-light);
+  margin-bottom: 20px;
+}
+
+.share-link-container {
+  display: flex;
+  width: 100%;
+}
+
+.share-link-container input {
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 0.9rem;
+  background-color: var(--primary-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-light);
+  border-radius: 5px 0 0 5px;
+  border-right: none;
+}
+
+.share-link-container button {
+  padding: 10px 20px;
+  background-color: var(--accent-color);
+  color: white;
+  border: 1px solid var(--accent-color);
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-weight: bold;
+  white-space: nowrap;
+}
