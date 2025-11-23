@@ -8,7 +8,6 @@ import './PollViewPage.css';
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/polls';
 const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000';
 
-// Helper function to get or create a unique voter ID from localStorage
 const getVoterId = () => {
   let voterId = localStorage.getItem('voterId');
   if (!voterId) {
@@ -27,6 +26,7 @@ const PollViewPage = () => {
   const { id } = useParams();
   const voterId = getVoterId();
 
+  const [timeLeft, setTimeLeft] = useState({ percentage: 100, text: 'Loading...' });
   useEffect(() => {
     const fetchPoll = async () => {
       try {
@@ -34,7 +34,6 @@ const PollViewPage = () => {
         setError('');
         const response = await axios.get(`${API_URL}/${id}`);
         setPoll(response.data);
-        // Check if this device has already voted type shii 
         if (response.data.votedBy.includes(voterId)) {
           setHasVoted(true);
         }
@@ -50,44 +49,73 @@ const PollViewPage = () => {
       fetchPoll();
     }
 
-    // Set up real-time connection
     const socket = io(SOCKET_URL);
-    
-    // Listen for updates to this specific poll
     socket.on('poll_update', (updatedPoll) => {
       if (updatedPoll._id === id) {
         setPoll(updatedPoll);
       }
     });
-
-    // Listen for when this specific poll is deleted by another user
+    
     socket.on('poll_delete', (deletedPoll) => {
-        if (deletedPoll.id === id) {
-            setError('This poll has been deleted by the creator.');
-            setPoll(null); // Clear the poll data to trigger the error view
-        }
+      if (deletedPoll.id === id) {
+        setError('This poll has been deleted.');
+        setPoll(null);
+      }
     });
 
-    // Clean up the connection when the component unmounts
     return () => socket.disconnect();
   }, [id, voterId]);
 
+  useEffect(() => {
+    if (!poll || !poll.expiresAt) {
+      // If the poll has no expiration, we don't need a timer.
+      setTimeLeft({ percentage: 100, text: 'No time limit' });
+      return;
+    }
+    // Set up an interval to update the timer every second
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const expirationTime = new Date(poll.expiresAt).getTime();
+      const creationTime = new Date(poll.createdAt).getTime();
+      
+      const totalDuration = expirationTime - creationTime;
+      const remainingTime = expirationTime - now;
+
+      if (remainingTime <= 0) {
+        setTimeLeft({ percentage: 0, text: 'Poll has ended' });
+        clearInterval(interval);
+      } else {
+        const percentage = (remainingTime / totalDuration) * 100;
+        
+        // Format the remaining time into a readable string (mm:ss)
+        const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+        const text = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} left`;
+
+        setTimeLeft({ percentage, text });
+      }
+    }, 1000);
+
+    // Clean up the interval when the component unmounts or the poll changes
+    return () => clearInterval(interval);
+
+  }, [poll]); // This effect re-runs whenever the poll data changes
+
   const handleVote = async (optionIndex) => {
     setIsSubmitting(true);
-    setError(''); // Clear previous errors on a new attempt
     try {
       const response = await axios.post(`${API_URL}/${id}/vote`, {
         optionIndex,
-        voterId // Send the device ID with the vote
+        voterId
       });
       setPoll(response.data);
       setHasVoted(true);
     } catch (err) {
       if (err.response && err.response.status === 403) {
-        setHasVoted(true); // Lock the UI if server confirms vote exists
-        // Don't show an error, just show the results.
+        setHasVoted(true);
+        setError("You've already voted on this poll.");
       } else {
-        setError('Your vote could not be submitted. Please try again.');
+        setError('An error occurred. Please try again.');
         console.error("Error submitting vote:", err);
       }
     } finally {
@@ -95,14 +123,10 @@ const PollViewPage = () => {
     }
   };
 
-  // Go spin the shii 
-
   if (loading) {
     return (
       <div className="poll-view-container">
-        <div className="loading-container">
-          <div className="spinner"></div>
-        </div>
+        <div className="loading-container"><div className="spinner"></div></div>
       </div>
     );
   }
@@ -123,9 +147,17 @@ const PollViewPage = () => {
   return (
     <div className="poll-view-container">
       <div className={`poll-card-standalone ${hasVoted ? 'results-view' : ''}`}>
+        
+        {poll.expiresAt && (
+          <div className="timer-bar-container">
+            <div className="timer-bar" style={{ width: `${timeLeft.percentage}%` }}></div>
+            <span className="timer-text">{timeLeft.text}</span>
+          </div>
+        )}
+
+        
         <h2>{poll.question}</h2>
-        {/* We can show a specific vote submission error here if needed */}
-        {error && !poll && <p className="error-message">{error}</p>}
+        {error && !hasVoted && <p className="error-message">{error}</p>}
 
         <ul className="options-list-standalone">
           {poll.options.map((option, index) => {
@@ -135,7 +167,7 @@ const PollViewPage = () => {
                 <button
                   className="option-button-standalone"
                   onClick={() => handleVote(index)}
-                  disabled={hasVoted || isSubmitting}
+                  disabled={hasVoted || isSubmitting || timeLeft.percentage <= 0}
                 >
                   <span className="option-text">{option.text}</span>
                   {hasVoted && <span className="option-votes">{option.votes} votes</span>}

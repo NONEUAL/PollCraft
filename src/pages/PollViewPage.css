@@ -86,7 +86,6 @@
   opacity: 0.8;
 }
 
-/* Inherit error message style from App.css */
 .poll-view-container .error-message {
     color: #ff8e8e;
     background-color: #5c3b42;
@@ -94,4 +93,34 @@
     border-radius: 5px;
     margin-bottom: 15px;
     text-align: center;
+}
+
+.timer-bar-container {
+  width: 100%;
+  height: 25px;
+  background-color: var(--card-bg);
+  border-radius: 5px;
+  margin-bottom: 25px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.timer-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #e94560, #ff7185);
+  transition: width 1s linear; /* Smooth transition every second */
+  border-radius: 4px;
+}
+
+.timer-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 0.9rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
 }
