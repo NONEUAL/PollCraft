@@ -1,0 +1,143 @@
+.poll-view-container {
+  max-width: 600px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.poll-card-standalone {
+  background: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 30px;
+  text-align: left;
+}
+
+.poll-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 15px; 
+}
+
+.poll-header-container h2 {
+  flex-grow: 1;
+  font-size: 1.8rem;
+  margin-top: 0;
+  margin-bottom: 0; 
+}
+
+.options-list-standalone {
+  list-style: none;
+  padding: 0;
+}
+
+.options-list-standalone li {
+  margin-bottom: 15px;
+}
+
+.option-button-standalone {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.1rem;
+  background-color: var(--card-bg);
+  color: var(--text-light);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Style for when voting is allowed */
+.poll-card-standalone:not(.results-view) .option-button-standalone:hover {
+  background-color: var(--accent-color);
+  color: var(--primary-bg);
+  transform: translateY(-2px);
+}
+
+.option-button-standalone:disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.option-text {
+  font-weight: bold;
+}
+
+.option-votes {
+  font-style: italic;
+}
+
+.vote-bar-container-standalone {
+  margin-top: 5px;
+  width: 100%;
+  background-color: var(--primary-bg);
+  border-radius: 5px;
+  overflow: hidden;
+  height: 10px;
+}
+
+.vote-bar-standalone {
+  height: 100%;
+  background-color: var(--accent-color);
+  border-radius: 5px;
+  transition: width 0.5s ease-in-out;
+}
+
+.view-toggle-btn {
+  background-color: var(--card-bg);
+  color: var(--text-light);
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+}
+
+.view-toggle-btn:hover {
+  background-color: var(--primary-bg);
+}
+
+.timer-bar-container {
+  width: 100%;
+  height: 25px;
+  background-color: var(--card-bg);
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  margin-top: 25px; 
+}
+
+.timer-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #e94560, #ff7185);
+  transition: width 1s linear;
+  border-radius: 4px;
+}
+
+.timer-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 0.9rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+.poll-view-container .error-message {
+    color: #ff8e8e;
+    background-color: #5c3b42;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+}
