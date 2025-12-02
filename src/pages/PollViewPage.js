@@ -172,7 +172,7 @@ const PollViewPage = () => {
         {error && !hasVoted && <p className="error-message">{error}</p>}
         
         {hasVoted && poll.resultsVisibility === 'hidden' ? (
-          <div className="thank-you-message">
+          <div className="lamats">
             <h3>Thank you for your vote!</h3>
             <p>Results are hidden for this poll.</p>
           </div>

@@ -1,13 +1,47 @@
-:root {
-  --primary-bg: #1a1a2e;
-  --secondary-bg: #16213e;
-  --card-bg: #0f3460;
-  --text-color: #e94560;
-  --text-light: #dcdcdc;
+/* NIGG MODE */
+:root,
+[data-theme="dark"] {
+  --primary-bg: #0b1120;
+  --secondary-bg: #0f172a;
+  --card-bg: #1e293b;
+  --text-color: #ff2e63;
+  --text-light: #e2e8f0;
+  --text-muted: #94a3b8;
   --accent-color: #e94560;
-  --border-color: #e94560;
+  --accent-hover: #ff477e;
+  --border-color: #334155;
+  --border-accent: #e94560;
+  --input-bg: #162033;
+  --success-bg: #064e3b;
+  --success-text: #6ee7b7;
+  --error-bg: #5c1f2f;
+  --error-text: #fca5a5;
+  --glow: rgba(233, 69, 96, 0.4);
+  --shadow: rgba(0, 0, 0, 0.5);
 }
 
+/*  FlashBang MODE */
+[data-theme="light"] {
+  --primary-bg: #f1f5f9;
+  --secondary-bg: #ffffff;
+  --card-bg: #f8fafc;
+  --text-color: #e94560;
+  --text-light: #1e293b;
+  --text-muted: #64748b;
+  --accent-color: #e94560;
+  --accent-hover: #d63651;
+  --border-color: #e2e8f0;
+  --border-accent: #e94560;
+  --input-bg: #ffffff;
+  --success-bg: #d1fae5;
+  --success-text: #065f46;
+  --error-bg: #fee2e2;
+  --error-text: #991b1b;
+  --glow: rgba(233, 69, 96, 0.15);
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* --- Base Body Styles --- */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -17,6 +51,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--primary-bg);
   color: var(--text-light);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 * {
