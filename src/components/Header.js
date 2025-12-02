@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react'; 
+// src/components/Header.js (Complete Corrected File)
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Sun, Moon } from 'react-feather';
 import './Header.css';
 
 const getInitialTheme = () => {
@@ -19,19 +21,20 @@ const Header = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
-
   return (
     <header className="app-header">
       <div className="header-content">
-        <Link to="/" className="logo">TournaCraft</Link>
+        <Link to="/" className="logo-link">
+          <img src="/dark-logo.png" alt="Very Black" className="logo-image Smoke" />
+          <img src="/light-logo.png" alt="Flashbang" className="logo-image Flashbang" />
+        </Link>
         <nav className="header-nav">
           <Link to="/polls" className="nav-link">
             View All Polls
           </Link>
           <button onClick={toggleTheme} className="iba-kulay" aria-label="Toggle theme">
-            {theme === 'dark' ? '☀️' : '🌙'}
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
-
         </nav>
       </div>
     </header>

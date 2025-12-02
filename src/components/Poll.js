@@ -1,6 +1,7 @@
 // Don't Touch this file - GV
 import React from 'react';
 import axios from 'axios';
+import { Trash2 } from 'react-feather';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/polls';
 
@@ -35,7 +36,9 @@ const Poll = ({ data }) => {
           <h2>{data.question}</h2>
           <p>Created by: {data.createdBy} {data.bracketMatchId && `(Match ID: ${data.bracketMatchId})`}</p>
         </div>
-        <button className="delete-button" onClick={handleDelete}>DELETE</button>
+        <button className="delete-button" onClick={handleDelete} title="Delete Poll">
+          <Trash2 size={16} />
+        </button>
       </div>
       {},
       
