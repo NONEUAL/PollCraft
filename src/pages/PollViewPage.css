@@ -141,3 +141,19 @@
     margin-bottom: 15px;
     text-align: center;
 }
+
+.lamats {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.lamats h3 {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.lamats p {
+  opacity: 0.8;
+}

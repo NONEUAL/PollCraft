@@ -1,3 +1,4 @@
+// src/pages/PollViewPage.js (Corrected and Complete)
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -128,7 +129,8 @@ const PollViewPage = () => {
     }
   };
 
-  // Render logic for loading state
+  // --- CONSOLIDATED RENDER LOGIC ---
+
   if (loading) {
     return (
       <div className="poll-view-container">
@@ -137,7 +139,6 @@ const PollViewPage = () => {
     );
   }
 
-  // Render logic for error state
   if (error || !poll) {
     return (
       <div className="poll-view-container">
@@ -148,7 +149,8 @@ const PollViewPage = () => {
       </div>
     );
   }
-
+  
+  // If we get here, we know 'poll' is not null.
   const totalVotes = poll.options.reduce((acc, option) => acc + option.votes, 0);
 
   return (
@@ -157,7 +159,7 @@ const PollViewPage = () => {
         
         <div className="poll-header-container">
           <h2>{poll.question}</h2>
-          {hasVoted && totalVotes > 0 && (
+          {hasVoted && poll.resultsVisibility === 'public' && totalVotes > 0 && (
             <button 
               className="view-toggle-btn"
               onClick={() => setDisplayMode(displayMode === 'count' ? 'percentage' : 'count')}
@@ -168,36 +170,44 @@ const PollViewPage = () => {
         </div>
         
         {error && !hasVoted && <p className="error-message">{error}</p>}
+        
+        {hasVoted && poll.resultsVisibility === 'hidden' ? (
+          <div className="thank-you-message">
+            <h3>Thank you for your vote!</h3>
+            <p>Results are hidden for this poll.</p>
+          </div>
+        ) : (
+          <ul className="options-list-standalone">
+            {poll.options.map((option, index) => {
+              const votePercentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
+              return (
+                <li key={option._id}>
+                  <button
+                    className="option-button-standalone"
+                    onClick={() => handleVote(index)}
+                    disabled={hasVoted || isSubmitting || timeLeft.percentage <= 0}
+                  >
+                    <span className="option-text">{option.text}</span>
+                    
+                    {hasVoted && poll.resultsVisibility === 'public' && (
+                      <span className="option-votes">
+                        {displayMode === 'count' 
+                          ? `${option.votes} votes` 
+                          : `${votePercentage.toFixed(1)}%`}
+                      </span>
+                    )}
+                  </button>
 
-        <ul className="options-list-standalone">
-          {poll.options.map((option, index) => {
-            const votePercentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
-            return (
-              <li key={option._id}>
-                <button
-                  className="option-button-standalone"
-                  onClick={() => handleVote(index)}
-                  disabled={hasVoted || isSubmitting || timeLeft.percentage <= 0}
-                >
-                  <span className="option-text">{option.text}</span>
-                  
-                  {hasVoted && (
-                    <span className="option-votes">
-                      {displayMode === 'count' 
-                        ? `${option.votes} votes` 
-                        : `${votePercentage.toFixed(1)}%`}
-                    </span>
+                  {hasVoted && poll.resultsVisibility === 'public' && (
+                    <div className="vote-bar-container-standalone">
+                      <div className="vote-bar-standalone" style={{ width: `${votePercentage}%` }}></div>
+                    </div>
                   )}
-                </button>
-                {hasVoted && (
-                  <div className="vote-bar-container-standalone">
-                    <div className="vote-bar-standalone" style={{ width: `${votePercentage}%` }}></div>
-                  </div>
-                )}
-              </li>
-            );
-          })}
-        </ul>
+                </li>
+              );
+            })}
+          </ul>
+        )}
         
         {poll.expiresAt && (
           <div className="timer-bar-container">
