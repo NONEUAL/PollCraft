@@ -173,7 +173,6 @@ const PollViewPage = () => {
         
         {hasVoted && poll.resultsVisibility === 'hidden' ? (
           <div className="lamats">
-            <h3>Thank you for your vote!</h3>
             <p>Results are hidden for this poll.</p>
           </div>
         ) : (

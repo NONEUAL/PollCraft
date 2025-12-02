@@ -1,21 +1,38 @@
-// src/pages/CreatePollPage.js (Complete Updated File)
+// src/pages/CreatePollPage.js (Complete Corrected File)
 import React, { useState } from 'react';
 import axios from 'axios';
 import Modal from '../components/Modal';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/polls';
 
+// 3AM things
+const missingOptionsErrors = [
+  "Buti pwede ka pang maglagay ng options, ‘edit/save’… sana ganun din ako sa’yo, para na-edit ko sana yung naramdaman ko.",
+  "Buti pwede ka pang maglagay ng options, ‘add more’… pero sa puso ko, wala nang space para sa’yo.",
+  "Buti pwede ka pang maglagay ng options, ‘try again’… pero sa pagmamahal ko sa’yo, wala nang second chance.",
+  "Buti pwede ka pang maglagay ng options, ‘fix’… pero yung relasyon natin, di na kayang ayusin.",
+  "Buti pwede ka pang maglagay ng options, ‘next time’… pero sa akin, ikaw na lang ang huling pagkakataon ko.",
+  "Buti pwede ka pang maglagay ng options, ‘more choices’… pero sa puso ko, ikaw lang ang gusto ko.",
+  "Mag-lagay ka ng options, pero ako wala sa choices mo.",
+  "Mag-lagay ka ng options, pero sa huli, ako pa rin ang dini-delete mo.",
+  "Buti pwede ka pang maglagay ng options, ‘try again’… sana ganun din ako sa’yo, para may chance pa ko.",
+  "Buti pwede ka pang maglagay ng options, ‘add more’… pero sa puso ko, wala nang space para sa’yo.",
+  // "Kailangan ng tanong, parang sa relasyon, kailangan ng label.",
+  // "Anong ipapa-vote mo kung walang tanong? Isip-isip din 'pag may time.",
+  // "Lagyan mo ng tanong. Huwag mo akong paasahin.",
+  // "Ang poll na walang tanong ay parang pag-ibig na walang patutunguhan. Walang saysay."
+];
+
+
 const CreatePollPage = () => {
   const [question, setQuestion] = useState('');
   const [options, setOptions] = useState(['', '']);
   const [timerDuration, setTimerDuration] = useState('');
+  const [hideResults, setHideResults] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newPollId, setNewPollId] = useState(null);
-
-  // State for the new visibility setting
-  const [hideResults, setHideResults] = useState(false);
 
   const handleOptionChange = (index, value) => {
     const newOptions = [...options];
@@ -24,13 +41,13 @@ const CreatePollPage = () => {
   };
 
   const addOption = () => {
-    if (options.length < 10) { // Limit to 10 options
+    if (options.length < 10) {
       setOptions([...options, '']);
     }
   };
 
   const removeOption = (index) => {
-    if (options.length > 2) { // Must have at least 2 options
+    if (options.length > 2) {
       const newOptions = options.filter((_, i) => i !== index);
       setOptions(newOptions);
     }
@@ -40,7 +57,7 @@ const CreatePollPage = () => {
     setQuestion('');
     setOptions(['', '']);
     setTimerDuration('');
-    setHideResults(false); // Reset the new setting as well
+    setHideResults(false);
     setError('');
   };
 
@@ -48,16 +65,19 @@ const CreatePollPage = () => {
     e.preventDefault();
     setError('');
 
-    // Validation
+
     if (!question.trim()) {
       setError('Please enter a question.');
       return;
     }
+
     const filledOptions = options.map(opt => opt.trim()).filter(opt => opt !== '');
     if (filledOptions.length < 2) {
-      setError('Please provide at least two non-empty options.');
+      const randomIndex = Math.floor(Math.random() * missingOptionsErrors.length);
+      setError(missingOptionsErrors[randomIndex]);
       return;
     }
+
 
     setIsLoading(true);
     try {
@@ -65,7 +85,6 @@ const CreatePollPage = () => {
         question,
         options: filledOptions,
         timerDuration: timerDuration || null,
-        // Send the new setting to the backend
         resultsVisibility: hideResults ? 'hidden' : 'public'
       });
       
@@ -130,7 +149,7 @@ const CreatePollPage = () => {
               <option value="1440">1 Day</option>
             </select>
           </div>
-          
+
           <div className="form-group settings-group">
              <label className="checkbox-label">
                 <input 

@@ -22,7 +22,6 @@ const Modal = ({ isOpen, onClose, pollId }) => {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close-btn" onClick={onClose}>&times;</button>
         <h2>Poll Created Successfully!</h2>
-        <p>Share this link with your audience to start voting:</p>
         <div className="share-link-container">
           <input type="text" value={pollLink} readOnly />
           <button onClick={handleCopy}>{copyButtonText}</button>

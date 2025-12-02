@@ -1,7 +1,11 @@
+const getThemeColor = (variable) => {
+  return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+};
+
 const particlesConfig = {
   background: {
     color: {
-      value: "transparent", 
+      value: "transparent",
     },
   },
   fpsLimit: 60,
@@ -9,7 +13,7 @@ const particlesConfig = {
     events: {
       onHover: {
         enable: true,
-        mode: "repulse", 
+        mode: "repulse",
       },
       resize: true,
     },
@@ -22,10 +26,10 @@ const particlesConfig = {
   },
   particles: {
     color: {
-      value: "#ff2e63", 
+      value: getThemeColor('--accent-color'),
     },
     links: {
-      color: "#ff2e63", 
+      color: getThemeColor('--accent-color'),
       distance: 150,
       enable: true,
       opacity: 0.15,
@@ -41,7 +45,7 @@ const particlesConfig = {
         default: "bounce",
       },
       random: false,
-      speed: 1, 
+      speed: 1,
       straight: false,
     },
     number: {
@@ -49,7 +53,7 @@ const particlesConfig = {
         enable: true,
         area: 800,
       },
-      value: 60, 
+      value: 60,
     },
     opacity: {
       value: 0.15,

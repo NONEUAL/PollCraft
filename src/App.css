@@ -3,19 +3,22 @@
   margin: 40px auto;
   padding: 20px;
   text-align: center;
+  position: relative; 
+  z-index: 1;
 }
 
-.app-container h1 {
+h1, .create-poll-container h1 {
   color: var(--text-color);
   font-size: 2.5rem;
   margin-bottom: 30px;
   text-transform: uppercase;
   letter-spacing: 2px;
+  font-weight: 700;
 }
 
 .poll-list {
   display: grid;
-  grid-gap: 20px;
+  grid-gap: 25px;
 }
 
 .poll-card {
@@ -24,8 +27,13 @@
   border-radius: 8px;
   padding: 20px;
   text-align: left;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-  position: relative; 
+  position: relative;
+  box-shadow: 0 4px 20px var(--shadow);
+  transition: transform 0.2s ease-in-out;
+}
+
+.poll-card:hover {
+  transform: translateY(-5px);
 }
 
 .poll-card-header {
@@ -36,9 +44,9 @@
 }
 
 .delete-button {
-  background: var(--error-bg); 
+  background: var(--error-bg);
   border: 1px solid var(--border-color);
-  color: var(--error-text); 
+  color: var(--error-text);
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -58,19 +66,22 @@
 .poll-card h2 {
   font-size: 1.4rem;
   margin-top: 0;
-  margin-bottom: 5px; 
+  margin-bottom: 5px;
   color: var(--text-light);
+  font-weight: 500;
 }
 
 .poll-card p {
   font-size: 0.8rem;
-  opacity: 0.6;
+  opacity: 0.8;
+  color: var(--text-muted);
   margin-top: 0;
 }
 
 .poll-card small {
   font-style: italic;
   opacity: 0.7;
+  color: var(--text-muted);
 }
 
 .options-list {
@@ -100,8 +111,8 @@
 }
 
 .option-button:hover {
-  background-color: var(--accent-color);
-  color: var(--primary-bg);
+  background-color: var(--accent-hover);
+  color: #fff;
   transform: translateY(-2px);
 }
 
@@ -111,7 +122,7 @@
 
 .vote-bar-container {
   width: 100%;
-  background-color: #2c3e50;
+  background-color: var(--primary-bg);
   border-radius: 5px;
   overflow: hidden;
   margin-top: 5px;
@@ -131,6 +142,7 @@
   padding: 30px;
   border-radius: 8px;
   border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px var(--shadow);
 }
 
 .poll-form .form-group {
@@ -141,7 +153,7 @@
 .poll-form label {
   display: block;
   margin-bottom: 8px;
-  font-weight: bold;
+  font-weight: 500;
   color: var(--text-light);
 }
 
@@ -149,11 +161,20 @@
 .poll-form select {
   width: 100%;
   padding: 12px;
-  background-color: var(--primary-bg);
+  background-color: var(--input-bg);
   border: 1px solid var(--border-color);
   border-radius: 5px;
   color: var(--text-light);
   font-size: 1rem;
+  font-family: 'Poppins', sans-serif; 
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.poll-form input[type="text"]:focus,
+.poll-form select:focus {
+  outline: none;
+  border-color: var(--border-accent);
+  box-shadow: 0 0 10px var(--glow);
 }
 
 .option-input-group {
@@ -173,11 +194,19 @@
   border-radius: 5px;
   margin-left: 10px;
   font-weight: bold;
+  transition: background-color 0.2s;
 }
 
 .remove-option-btn {
-  background-color: #5c3b42;
-  color: #ff8e8e;
+  background-color: var(--card-bg);
+  color: var(--accent-color);
+  border: 1px solid var(--border-color);
+}
+
+.remove-option-btn:hover {
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border-color: var(--error-bg);
 }
 
 .add-option-btn {
@@ -186,6 +215,11 @@
   width: 100%;
   margin-top: 5px;
   margin-left: 0;
+  border: 1px solid var(--border-color);
+}
+
+.add-option-btn:hover {
+  background-color: var(--input-bg);
 }
 
 .submit-poll-btn {
@@ -194,39 +228,69 @@
   font-size: 1.1rem;
   font-weight: bold;
   background-color: var(--accent-color);
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.submit-poll-btn:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+  box-shadow: 0 0 15px var(--glow);
 }
 
 .submit-poll-btn:disabled {
-  background-color: #5c3b42;
+  background-color: var(--border-color);
+  color: var(--text-muted);
   cursor: not-allowed;
 }
-
-.error-message {
-  color: #ff8e8e;
-  background-color: #5c3b42;
-  padding: 10px;
+.settings-group {
+  background-color: var(--input-bg);
+  padding: 15px;
   border-radius: 5px;
-  margin-bottom: 15px;
-  text-align: center;
+  margin-top: -10px;
+  border: 1px solid var(--border-color);
 }
 
-.page-error-message {
-  background-color: #5c3b42;
-  color: #ff8e8e;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid var(--accent-color);
-  text-align: center;
-  max-width: 600px;
-  margin: 20px auto;
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  font-weight: normal;
+  color: var(--text-muted);
 }
 
-/* --- Loading Spinner Styles --- */
+.checkbox-label input[type="checkbox"] {
+  width: auto;
+  margin-right: 10px;
+  margin-top: 2px;
+  appearance: none;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0; /* Prevents checkbox from shrinking */
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.checkbox-label input[type="checkbox"]:checked::after {
+  content: '✔';
+  position: absolute;
+  color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+}
+
 .loading-container {
   display: flex;
   justify-content: center;
@@ -248,47 +312,28 @@
   100% { transform: rotate(360deg); }
 }
 
-.settings-group {
-  background-color: var(--primary-bg);
-  padding: 15px;
+.error-message {
+  color: var(--error-text);
+  background-color: var(--error-bg);
+  padding: 10px;
   border-radius: 5px;
-  margin-top: -10px; 
+  margin-bottom: 15px;
+  text-align: center;
+  white-space: pre-wrap;
 }
 
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  font-weight: normal;
+.page-error-message {
+  background-color: var(--secondary-bg);
+  color: var(--error-text);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--error-bg);
+  text-align: center;
+  max-width: 600px;
+  margin: 20px auto;
+  box-shadow: 0 4px 20px var(--shadow);
 }
 
-.checkbox-label input[type="checkbox"] {
-  width: auto;
-  margin-right: 10px;
-  appearance: none;
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  width: 18px;
-  height: 18px;
-  border-radius: 3px;
-  cursor: pointer;
-  position: relative;
-}
-
-.checkbox-label input[type="checkbox"]:checked {
-  background-color: var(--accent-color);
-  border-color: var(--accent-color);
-}
-
-.checkbox-label input[type="checkbox"]:checked::after {
-  content: '✔';
-  position: absolute;
-  color: white;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 12px;
-}
 
 @media (max-width: 768px) {
 
@@ -298,11 +343,11 @@
   }
 
   h1, .create-poll-container h1 {
-
     font-size: 1.8rem;
   }
-  .logo {
-    font-size: 1.5rem;
+
+  .logo-image {
+    height: 35px; 
   }
 
   .app-header {
@@ -322,6 +367,7 @@
     padding: 12px;
   }
 
+
   .poll-card-standalone {
     padding: 20px;
   }
@@ -332,7 +378,7 @@
 
   .poll-header-container {
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
     gap: 15px;
   }
 
@@ -341,6 +387,7 @@
     font-size: 1rem;
   }
   
+
   .modal-content {
     padding: 25px 20px;
   }
@@ -352,6 +399,7 @@
   .share-link-container input {
     border-radius: 5px 5px 0 0;
     text-align: center;
+    border-right: 1px solid var(--border-color); 
   }
   
   .share-link-container button {

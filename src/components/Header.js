@@ -15,6 +15,7 @@ const Header = () => {
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
+    window.dispatchEvent(new Event('themeChanged'));
   }, [theme]);
 
   const toggleTheme = () => {
@@ -29,9 +30,9 @@ const Header = () => {
           <img src="/light-logo.png" alt="Flashbang" className="logo-image Flashbang" />
         </Link>
         <nav className="header-nav">
-          <Link to="/polls" className="nav-link">
+          {/* <Link to="/polls" className="nav-link">
             View All Polls
-          </Link>
+          </Link> */}
           <button onClick={toggleTheme} className="iba-kulay" aria-label="Toggle theme">
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
