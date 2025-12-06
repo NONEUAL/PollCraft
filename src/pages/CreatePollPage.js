@@ -1,4 +1,3 @@
-// src/pages/CreatePollPage.js (Complete Corrected File)
 import React, { useState } from 'react';
 import axios from 'axios';
 import Modal from '../components/Modal';
