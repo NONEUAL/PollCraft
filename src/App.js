@@ -1,16 +1,12 @@
-// src/App.js (Complete Corrected File)
-import React, { useEffect, useState, useCallback } from 'react'; // Import useCallback
+import React, { useEffect, useState, useCallback } from 'react'; 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import CreatePollPage from './pages/CreatePollPage';
 import PollListPage from './pages/PollListPage';
 import PollViewPage from './pages/PollViewPage';
-
-// --- UPDATED IMPORTS FOR PARTICLES ---
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 import particlesConfig from './particles-config';
-// --- END OF UPDATED IMPORTS ---
 
 import './App.css';
 
