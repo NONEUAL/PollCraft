@@ -8,7 +8,6 @@ const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000';
 
 const PollListPage = () => {
   const [polls, setPolls] = useState([]);
-  // --- NEW STATE FOR LOADING AND ERRORS ---
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   
